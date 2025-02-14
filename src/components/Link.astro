@@ -4,9 +4,6 @@ interface Props {
 }
 
 let { href } = Astro.props
-if (!href.startsWith("http")) {
-  href = "/alexwayne-codes" + href
-}
 ---
 
 <a href={href} class="underline hover:text-violet-400"><slot /></a>

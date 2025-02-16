@@ -1,3 +1,7 @@
+---
+import BgCanvas from "../components/bg-canvas.astro"
+---
+
 <!doctype html>
 <html lang="en">
   <head class="m-0 h-screen w-screen">
@@ -11,7 +15,8 @@
   <body
     class="m-0 h-screen w-screen bg-gradient-to-b from-blue-900 to-sky-950 to-[900px] py-10"
   >
-    <div class="m-auto w-[800px]">
+    <BgCanvas />
+    <div class="relative m-auto w-[800px]">
       <a href="/"
         ><h1
           class="mb-10 text-5xl font-extrabold text-transparent decoration-orange-400 drop-shadow-md transition hover:translate-x-4"

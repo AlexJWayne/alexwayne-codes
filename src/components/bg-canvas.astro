@@ -1,0 +1,48 @@
+<canvas id="bg-canvas" class="fixed top-0 h-dvh w-dvw"></canvas>
+
+<script>
+  import * as THREE from "three"
+
+  import vert from "./shaders/vert.glsl?raw"
+  import frag from "./shaders/a.glsl?raw"
+
+  const start = performance.now()
+  const canvas = document.getElementById("bg-canvas") as HTMLCanvasElement
+  const three = new THREE.WebGLRenderer({ canvas })
+  window.addEventListener("resize", onResize)
+  onResize()
+
+  const scene = new THREE.Scene()
+
+  const camera = new THREE.OrthographicCamera(0, 1, 1, 0, 0.1, 1000)
+  camera.position.set(0, 0, 1)
+
+  const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: start / 1000 },
+        aspect: { value: window.innerWidth / window.innerHeight },
+      },
+      vertexShader: vert,
+      fragmentShader: frag,
+    }),
+  )
+  plane.position.set(0.5, 0.5, 0)
+  scene.add(plane)
+
+  render()
+
+  function render(t: number = 0) {
+    plane.material.uniforms.time.value = (performance.now() - start) / 1000
+    plane.material.uniforms.aspect.value =
+      window.innerWidth / window.innerHeight
+
+    three.render(scene, camera)
+    requestAnimationFrame(render)
+  }
+
+  function onResize() {
+    three.setSize(window.innerWidth, window.innerHeight)
+  }
+</script>

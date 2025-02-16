@@ -19,17 +19,17 @@ void main() {
 
     vec2 uv = vUvs;
     uv.y /= aspect;
-    uv *= 8.0 + sin(time * 0.18) * 2.0;
+    uv *= 6.0; //+ sin(time * 0.18) * 2.0;
     uv += vec2(
-            time * 0.35,
-            cos(time * 0.2) * 0.25
+            time * 0.05,
+            cos(time * 0.1) * 0.25
         );
 
     uv = fract(uv);
     uv -= 0.5;
 
     float dist = fract(length(uv));
-    float edge = remap(cos(time * 0.25), -1.0, 1.0, 0.1, 0.6);
+    float edge = remap(cos(time * 0.15), -1.0, 1.0, 0.1, 0.6);
     float circle = 1.0 - step(edge, dist);
 
     vec3 color = vec3(circle);

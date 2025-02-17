@@ -1,12 +1,10 @@
 ---
 import Link from "../components/Link.astro"
-import Layout from "../layouts/Layout.astro"
+import Page from "../components/Page.astro"
 import glslSlides from "../assets/glsl-slides.png"
-import PageHeading from "../components/PageHeading.astro"
 ---
 
-<Layout>
-  <PageHeading>GLSL Shader Slides</PageHeading>
+<Page title="GLSL Shader Slides">
   <p>
     I presented at my local makerspace on shaders. I had recently discovered
     them myself, and became fascinated by how they turn code and math into art.
@@ -24,4 +22,4 @@ import PageHeading from "../components/PageHeading.astro"
     View the slides
     <img src={glslSlides.src} alt="GLSL Shader Slides" class="my-4" />
   </Link>
-</Layout>
+</Page>

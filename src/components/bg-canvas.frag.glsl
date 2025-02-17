@@ -28,7 +28,7 @@ vec2 rotate(vec2 v, float a) {
     return m * v;
 }
 
-vec3 circleGrid() {
+float circleGrid() {
     vec2 uv = vUvs;
     uv -= 0.5;
     uv.y /= aspect;
@@ -39,26 +39,27 @@ vec3 circleGrid() {
         );
     uv *= 8.0 + sin(time * 0.09) * 1.0;
 
-    uv = fract(uv);
-    uv -= 0.5;
+    vec2 gridUv = fract(uv);
+    gridUv -= 0.5;
 
-    float dist = fract(length(uv));
-    float edge = remap(sin(time * 0.15), -1.0, 1.0, 0.1, 0.6);
+    float dist = fract(length(gridUv));
+    float timeWithOffset = time + sin(uv.x) + sin(uv.y);
+    float edge = remap(sin(timeWithOffset * 0.35), -1.0, 1.0, 0.05, 0.66);
     float circle = 1.0 - step(edge, dist);
 
-    return vec3(circle);
+    return circle;
 }
 
-vec3 ripples() {
+float ripples() {
     vec2 uv = vUvs;
-    uv -= vec2(0.5, -0.5);
+    uv -= vec2(-0.25, -0.5);
     uv.y /= aspect;
-    uv *= 30.0;
+    uv *= 120.0;
 
     float val = sin(length(uv) - time * 0.4);
     val = remap(val, -1.0, 1.0, 0.0, 1.0);
 
-    float scaledTime = time * 0.25;
+    float scaledTime = time * 0.35;
     float edge = satCos(mod(scaledTime, PI));
     val = step(edge, val);
 
@@ -66,39 +67,32 @@ vec3 ripples() {
         val = 1.0 - val;
     }
 
-    return vec3(val);
-}
-
-vec3 mixModes(float qty, float i) {
-    // float duration = 5.0;
-    // float mode = mod(time / duration, 2.0);
-    // float progress = fract(mode);
-
-    // if (mode < i) return a;
-    // if (mode > i + 1.0) return b;
-    // if (progress > 0.9) return mix(a, b, remap(fract(progress), 0.9, 1.0, 0.0, 1.0));
-    // return a;
-    return vec3(0.0);
+    return val;
 }
 
 void main() {
+    float duration = 60.0;
     vec3 base = vec3(8.0, 47.0, 73.0) / 255.0;
-
     float qty = 2.0;
-    vec3 circleGridColor = circleGrid();
-    vec3 ripplesColor = ripples();
 
-    vec3 color;
-    // color = mixModes(qty, circleGridColor, ripplesColor, 0.0);
-    // color = mixModes(qty, ripplesColor, circleGridColor, 1.0);
-    color = circleGridColor;
+    float mode = mod(
+            time / duration + (vUvs.x / 2.0 + vUvs.y) * 0.2,
+            qty
+        );
+    float value;
 
-    vec3 fadedColor = mix(color, vec3(0.0), vUvs.y * 0.5);
+    // Debug: force a mode
+    // mode = 1.0;
+
+    if (mode < 1.0) value = circleGrid();
+    else if (mode < 2.0) value = ripples();
+
+    vec3 fadedColor = vec3(mix(value, 0.0, vUvs.y * 0.5));
     gl_FragColor = vec4(
             mix(fadedColor, base, 0.97),
             1.0
         );
 
-    // Debug
-    // gl_FragColor = vec4(color, 1.0);
+    // Debug: Render high contrast pattern
+    // gl_FragColor = vec4(vec3(value), 1.0);
 }

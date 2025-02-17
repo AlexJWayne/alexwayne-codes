@@ -15,9 +15,9 @@ float remap(float v, float inMin, float inMax, float outMin, float outMax) {
     float t = inverseLerp(v, inMin, inMax);
     return mix(outMin, outMax, t);
 }
-// vec3 sat(vec3 v) {
-//     return clamp(v, 0.0, 1.0);
-// }
+vec3 sat(vec3 v) {
+    return clamp(v, 0.0, 1.0);
+}
 float satSin(float v) {
     return remap(sin(v), -1.0, 1.0, 0.0, 1.0);
 }

@@ -5,6 +5,9 @@ uniform float time;
 
 #define PI 3.1415926535897932384626433832795
 
+// Utils
+// -----
+
 float inverseLerp(float v, float minValue, float maxValue) {
     return (v - minValue) / (maxValue - minValue);
 }
@@ -28,6 +31,9 @@ vec2 rotate(vec2 v, float a) {
     return m * v;
 }
 
+// Mode 0: Pulsating circles in a grid.
+// ------
+
 float circleGrid() {
     vec2 uv = vUvs;
     uv -= 0.5;
@@ -44,35 +50,45 @@ float circleGrid() {
 
     float dist = fract(length(gridUv));
     float timeWithOffset = time + sin(uv.x) + sin(uv.y);
-    float edge = remap(sin(timeWithOffset * 0.35), -1.0, 1.0, 0.05, 0.66);
+    float edge = remap(sin(timeWithOffset * 0.25), -1.0, 1.0, 0.05, 0.66);
     float circle = 1.0 - step(edge, dist);
 
     return circle;
 }
 
-float ripples() {
-    vec2 uv = vUvs;
-    uv -= vec2(-0.25, -0.5);
+// Mode 1: Ripple interference patterns.
+// ------
+
+float ripple(vec2 origin, float scale) {
+    vec2 uv = 0.5 - vUvs;
+    uv -= origin;
     uv.y /= aspect;
-    uv *= 120.0;
+    uv *= scale;
 
     float val = sin(length(uv) - time * 0.4);
-    val = remap(val, -1.0, 1.0, 0.0, 1.0);
-
-    float scaledTime = time * 0.35;
-    float edge = satCos(mod(scaledTime, PI));
-    val = step(edge, val);
-
-    if (mod(scaledTime, PI * 2.0) < PI) {
-        val = 1.0 - val;
-    }
 
     return val;
 }
 
+float ripples() {
+    float val = 0.0;
+    val += ripple(rotate(vec2(1.0, 1.0), time / 71.0), 13.0) * 0.5;
+    val += ripple(rotate(vec2(2.0, 0.0), time / 41.0), 57.0) * 0.5;
+    val += ripple(rotate(vec2(0.0, 0.25), -time / 37.0), 73.0) * 1.0;
+
+    float scaledTime = time * 0.35;
+    float edge = satCos(scaledTime);
+    val = step(edge, val);
+
+    return val;
+}
+
+// Entry point
+// -----------
+
 void main() {
+    vec3 base = vec3(0.031, 0.184, 0.286);
     float duration = 60.0;
-    vec3 base = vec3(8.0, 47.0, 73.0) / 255.0;
     float qty = 2.0;
 
     float mode = mod(
@@ -82,7 +98,7 @@ void main() {
     float value;
 
     // Debug: force a mode
-    // mode = 1.0;
+    // mode = 1.5;
 
     if (mode < 1.0) value = circleGrid();
     else if (mode < 2.0) value = ripples();

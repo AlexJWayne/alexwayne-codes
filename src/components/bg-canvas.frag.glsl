@@ -98,7 +98,7 @@ void main() {
     float value;
 
     // Debug: force a mode
-    // mode = 1.5;
+    // mode = 0.5;
 
     if (mode < 1.0) value = circleGrid();
     else if (mode < 2.0) value = ripples();

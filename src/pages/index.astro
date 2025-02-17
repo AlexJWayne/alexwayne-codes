@@ -4,15 +4,23 @@ import Link from "../components/Link.astro"
 import GridList from "../components/GridList.astro"
 import GridListItem from "../components/GridListItem.astro"
 
+import awcodesImage from "../assets/awcodes.png"
 import glslSlidesImage from "../assets/glsl-slides.png"
-import spirographImage from "../assets/spirograph.png"
 import mandalatronImage from "../assets/mandalatron.png"
+import spirographImage from "../assets/spirograph.png"
 ---
 
 <Layout>
   <p>I'm a software developer by day, and also by night.</p>
 
   <GridList title="A few of the things I've made">
+    <GridListItem
+      href="https://github.com/AlexJWayne/alexwayne-codes"
+      image={awcodesImage.src}
+    >
+      This website
+    </GridListItem>
+
     <GridListItem href="/spirograph" image={spirographImage.src}
       >Spirograph</GridListItem
     >

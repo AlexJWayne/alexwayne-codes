@@ -8,33 +8,30 @@ import awcodesImage from "../assets/awcodes.png"
 import glslSlidesImage from "../assets/glsl-slides.png"
 import mandalatronImage from "../assets/mandalatron.png"
 import spirographImage from "../assets/spirograph.png"
+import { getCollection } from "astro:content"
+
+const posts = await getCollection("posts")
 ---
 
 <Layout>
   <p>I'm a software developer by day, and also by night.</p>
 
   <GridList title="A few of the things I've made">
-    <GridListItem href="/spirograph" image={spirographImage.src}
-      >Spirograph</GridListItem
-    >
-    <GridListItem href="/glsl-slides" image={glslSlidesImage.src}
-      >GLSL Slides</GridListItem
-    >
-    <GridListItem href="/mandalatron" image={mandalatronImage.src}
-      >Mandalatron</GridListItem
-    >
-    <GridListItem
-      href="https://github.com/AlexJWayne/alexwayne-codes"
-      image={awcodesImage.src}
-    >
-      This website
-    </GridListItem>
+    {
+      posts.map((post) => (
+        <GridListItem href={post.id} image={post.data.cover?.src}>
+          {post.data.title}
+        </GridListItem>
+      ))
+    }
   </GridList>
 
-  <GridList title="Links">
-    <GridListItem href="https://github.com/AlexJWayne">Github</GridListItem>
-    <GridListItem href="http://alexwayne.rocks">Music</GridListItem>
-  </GridList>
+  <h2 class="text-xl font-bold">A few of my links</h2>
+
+  <ul class="mb-12 list-disc pl-6">
+    <li><a href="https://github.com/AlexJWayne">Github</a></li>
+    <li><a href="http://alexwayne.rocks">Music</a></li>
+  </ul>
 
   <h2 class="text-xl font-bold">A few of the things I use</h2>
 

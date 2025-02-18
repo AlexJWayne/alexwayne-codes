@@ -4,13 +4,11 @@ import Link from "../components/Link.astro"
 import GridList from "../components/GridList.astro"
 import GridListItem from "../components/GridListItem.astro"
 
-import awcodesImage from "../assets/awcodes.png"
-import glslSlidesImage from "../assets/glsl-slides.png"
-import mandalatronImage from "../assets/mandalatron.png"
-import spirographImage from "../assets/spirograph.png"
 import { getCollection } from "astro:content"
 
-const posts = await getCollection("posts")
+const posts = (await getCollection("posts"))
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
+  .reverse()
 ---
 
 <Layout>

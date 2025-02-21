@@ -16,13 +16,13 @@ import BgCanvas from "../components/BgCanvas.astro"
   </head>
 
   <body
-    class="m-0 h-screen w-screen bg-gradient-to-b from-blue-900 to-sky-950 to-[900px] py-10 font-light"
+    class="m-0 h-screen w-screen bg-gradient-to-b from-blue-900 to-sky-950 to-[900px] py-10 font-normal"
   >
     <BgCanvas />
     <div class="relative m-auto w-[880px] p-10 backdrop-blur">
       <a href="/"
         ><h1
-          class="-mt-10 mb-10 font-[Jura] text-5xl font-bold text-transparent decoration-orange-400 drop-shadow-md transition hover:translate-x-4"
+          class="-mt-10 mb-10 font-[Jura] text-5xl font-bold text-transparent decoration-orange-400 drop-shadow-md transition hover:translate-x-2"
         >
           <span
             class="bg-gradient-to-tr from-red-400 to-yellow-500 bg-clip-text"
@@ -33,7 +33,7 @@ import BgCanvas from "../components/BgCanvas.astro"
           >
         </h1></a
       >
-      <div class="prose prose-2xl prose-invert">
+      <div class="prose prose-invert">
         <slot />
       </div>
     </div>

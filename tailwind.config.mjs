@@ -1,4 +1,5 @@
 import typography from "@tailwindcss/typography"
+import plugin from "tailwindcss/plugin"
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -7,7 +8,30 @@ export default {
     fontFamily: {
       sans: ["Lexend"],
     },
-    extend: {},
+    fontWeight: {
+      thin: undefined,
+      light: "200",
+      normal: "300",
+      medium: "400",
+      bold: "500",
+      extrabold: undefined,
+      black: "800",
+    },
+
+    extend: {
+      dropShadow: {
+        "dark-glow": ["0 0px 4px rgba(0,0,0, 0.7)"],
+      },
+    },
   },
-  plugins: [typography],
+  plugins: [
+    plugin(({ addBase }) => {
+      addBase({
+        html: {
+          fontSize: "20px",
+        },
+      })
+    }),
+    typography,
+  ],
 }

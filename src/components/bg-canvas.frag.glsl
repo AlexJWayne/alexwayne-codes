@@ -31,13 +31,18 @@ vec2 rotate(vec2 v, float a) {
     return m * v;
 }
 
+vec2 applyAspectRatio(vec2 uv) {
+    uv.x *= aspect;
+    return uv;
+}
+
 // Mode 0: Pulsating circles in a grid.
 // ------
 
 float circleGrid() {
     vec2 uv = vUvs;
     uv -= 0.5;
-    uv.y /= aspect;
+    uv = applyAspectRatio(uv);
     uv = rotate(uv, -time * 0.015);
     uv += vec2(
             sin(time * 0.1) * 0.15,
@@ -62,7 +67,7 @@ float circleGrid() {
 float ripple(vec2 origin, float scale) {
     vec2 uv = 0.5 - vUvs;
     uv -= origin;
-    uv.y /= aspect;
+    uv = applyAspectRatio(uv);
     uv *= scale;
 
     float val = sin(length(uv) - time * 0.4);
@@ -103,7 +108,7 @@ void main() {
     if (mode < 1.0) value = circleGrid();
     else if (mode < 2.0) value = ripples();
 
-    vec3 fadedColor = vec3(mix(value, 0.0, vUvs.y * 0.5));
+    vec3 fadedColor = vec3(mix(value, 0.0, vUvs.y * 0.75));
     gl_FragColor = vec4(
             mix(fadedColor, base, 0.97),
             1.0

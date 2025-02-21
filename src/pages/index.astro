@@ -13,7 +13,10 @@ const posts = (await getCollection("posts"))
 
 <Layout>
   <p class="relative -top-8">
-    I'm a software developer by day, and also by night.
+    I'm a software developer by day, <span
+      class="drop-shadow-dark-glow font-semibold text-indigo-500"
+      >and also by night.</span
+    >
   </p>
 
   <GridList title="A few of the things I've made">
@@ -29,8 +32,8 @@ const posts = (await getCollection("posts"))
   <h2 class="text-xl font-bold">A few of my links</h2>
 
   <ul class="mb-12 list-disc pl-6">
-    <li><a href="https://github.com/AlexJWayne">Github</a></li>
-    <li><a href="http://alexwayne.rocks">Music</a></li>
+    <li><Link href="https://github.com/AlexJWayne">Github</Link></li>
+    <li><Link href="http://alexwayne.rocks">Music</Link></li>
   </ul>
 
   <h2 class="text-xl font-bold">A few of the things I use</h2>

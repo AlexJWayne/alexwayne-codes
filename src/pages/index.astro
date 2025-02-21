@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro"
-import Link from "../components/Link.astro"
 import GridList from "../components/GridList.astro"
 import GridListItem from "../components/GridListItem.astro"
 
@@ -29,25 +28,25 @@ const posts = (await getCollection("posts"))
     }
   </GridList>
 
-  <h2 class="text-xl font-bold">A few of my links</h2>
+  <h2>A few of my links</h2>
 
   <ul class="mb-12 list-disc pl-6">
-    <li><Link href="https://github.com/AlexJWayne">Github</Link></li>
-    <li><Link href="http://alexwayne.rocks">Music</Link></li>
+    <li><a href="https://github.com/AlexJWayne">Github</a></li>
+    <li><a href="http://alexwayne.rocks">Music</a></li>
   </ul>
 
-  <h2 class="text-xl font-bold">A few of the things I use</h2>
+  <h2>A few of the things I use</h2>
 
   <ul class="mb-12 list-disc pl-6">
     <li>
-      <Link href="https://www.zsa.io/voyager">ZSA Voyager</Link> in <Link
+      <a href="https://www.zsa.io/voyager">ZSA Voyager</a> in <a
         href="https://configure.zsa.io/voyager/layouts/qGmLZ/latest/0"
-        >Colemak DH</Link
+        >Colemak DH</a
       >
     </li>
     <li>
-      <Link href="https://zed.dev">Zed</Link> in <Link
-        href="https://zed.dev/docs/vim">Vim mode</Link
+      <a href="https://zed.dev">Zed</a> in <a href="https://zed.dev/docs/vim"
+        >Vim mode</a
       >
     </li>
   </ul>

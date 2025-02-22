@@ -6,7 +6,11 @@ import GridListItem from "../components/GridListItem.astro"
 import { getCollection } from "astro:content"
 
 const posts = (await getCollection("posts"))
-  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
+  .sort(
+    (a, b) =>
+      (a.data.date || new Date()).getTime() -
+      (b.data.date || new Date()).getTime(),
+  )
   .reverse()
 ---
 

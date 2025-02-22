@@ -6,7 +6,7 @@ const posts = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      date: z.date(),
+      date: z.date().optional(),
       cover: image().optional(),
       source: z.string().url().optional(),
     }),

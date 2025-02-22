@@ -1,6 +1,7 @@
 ---
 import { render, getCollection } from "astro:content"
 import Layout from "../layouts/Layout.astro"
+import type { date } from "astro:schema"
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts")
@@ -27,7 +28,7 @@ const { Content } = await render(post)
           </a>
         )
       }
-      <div>{post.data.date.toLocaleDateString()}</div>
+      {post.data.date && <div>{post.data.date.toLocaleDateString()}</div>}
     </div>
   </div>
   <Content />

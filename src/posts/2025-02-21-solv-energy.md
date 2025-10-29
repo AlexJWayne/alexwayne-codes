@@ -1,6 +1,7 @@
 ---
 title: SOLVEnergy
 cover: ./2025-02-21-solv-energy.png
+date: 2025-02-21
 ---
 
 The work I do by day is for [SOLVEnergy](https://solvenergy.com).
@@ -11,7 +12,7 @@ Here's a map of installed components in a demo project.
 
 ![Sunscreen Map](./2025-02-21-solv-energy.png)
 
-I can't show too much since it's proprietary for our clients and internal use, but I can say, after working on for a number of years, it's pretty pretty cool.
+I can't show too much since it's proprietary for our clients and internal use, but I can say, after working on for a number of years, it's pretty cool.
 
 Some tech involved:
 

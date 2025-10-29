@@ -28,7 +28,7 @@ const { Content } = await render(post)
           </a>
         )
       }
-      {post.data.date && <div>{post.data.date.toLocaleDateString()}</div>}
+      {post.data.date && <div>{post.data.date.toISOString().slice(0, 10)}</div>}
     </div>
   </div>
   <Content />

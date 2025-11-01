@@ -1,0 +1,84 @@
+<canvas id="bg-canvas" class="fixed top-0 h-dvh w-dvw"></canvas>
+
+<script>
+  import tgpu from "typegpu"
+  import * as d from "typegpu/data"
+  import { vertexShader } from "./vertex-shader"
+  import { createFragmentShader, Uniforms } from "./fragment-shader"
+
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
+  const canvas = document.querySelector("#bg-canvas") as HTMLCanvasElement
+  canvas.width = canvas.clientWidth
+  canvas.height = canvas.clientHeight
+
+  const context = canvas.getContext("webgpu") as GPUCanvasContext
+  const root = await tgpu.init()
+
+  let avg60 = 0
+
+  context.configure({
+    device: root.device,
+    format: presentationFormat,
+    alphaMode: "premultiplied",
+  })
+
+  function setupStartTime() {
+    const startStr = localStorage.getItem("timeStart")
+    if (startStr) {
+      const start = parseFloat(startStr)
+      if (performance.timeOrigin - start < 1000 * 60 * 60 * 24) {
+        return start
+      }
+    }
+
+    let newStart = performance.timeOrigin
+    localStorage.setItem("timeStart", newStart.toString())
+    return newStart
+  }
+  const start = setupStartTime()
+
+  const indexBuffer = root
+    .createBuffer(d.arrayOf(d.u16, 6), [0, 2, 1, 0, 3, 2])
+    .$usage("index")
+
+  const uniformsBuffer = root.createBuffer(Uniforms).$usage("storage")
+  const vertexLayout = tgpu.vertexLayout(d.arrayOf(d.vec4f))
+
+  console.log(
+    tgpu.resolve({
+      externals: {
+        mainFragmentShader: createFragmentShader(uniformsBuffer.as("readonly")),
+      },
+    }),
+  )
+
+  const pipeline = root["~unstable"]
+    .withVertex(vertexShader, { foo: vertexLayout.attrib })
+    .withFragment(createFragmentShader(uniformsBuffer.as("readonly")), {
+      format: presentationFormat,
+    })
+    .createPipeline()
+    .withIndexBuffer(indexBuffer)
+
+  function render() {
+    uniformsBuffer.write({
+      elapsed: (performance.timeOrigin - start + performance.now()) / 1000,
+      aspect: window.innerWidth / window.innerHeight,
+    })
+
+    pipeline
+      .withColorAttachment({
+        view: context.getCurrentTexture().createView(),
+        loadOp: "clear",
+        storeOp: "store",
+      })
+      .drawIndexed(6)
+
+    requestAnimationFrame(render)
+  }
+  render()
+
+  export function onCleanup() {
+    root.destroy()
+  }
+</script>

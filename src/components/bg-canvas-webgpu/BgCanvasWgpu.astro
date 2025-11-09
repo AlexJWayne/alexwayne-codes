@@ -5,6 +5,7 @@
   import * as d from "typegpu/data"
   import { vertexShader } from "./vertex-shader"
   import { createFragmentShader, Uniforms } from "./fragment-shader"
+  import { reportTime } from "./timing"
 
   const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
   const canvas = document.querySelector("#bg-canvas") as HTMLCanvasElement
@@ -12,9 +13,11 @@
   canvas.height = canvas.clientHeight
 
   const context = canvas.getContext("webgpu") as GPUCanvasContext
-  const root = await tgpu.init()
-
-  let avg60 = 0
+  const root = await tgpu.init({
+    device: {
+      requiredFeatures: ["timestamp-query"],
+    },
+  })
 
   context.configure({
     device: root.device,
@@ -59,6 +62,7 @@
     })
     .createPipeline()
     .withIndexBuffer(indexBuffer)
+    .withPerformanceCallback(reportTime)
 
   function render() {
     uniformsBuffer.write({

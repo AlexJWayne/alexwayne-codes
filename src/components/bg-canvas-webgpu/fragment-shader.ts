@@ -5,12 +5,13 @@ import * as std from "typegpu/std"
 import { wanderingShapes } from "./modes/wandering-shapes"
 import { circleGrid } from "./modes/circle-grid"
 import { snow } from "./modes/snow"
+import { cube } from "./modes/cube"
 
 const baseColorA = d.vec3f(9, 46, 71).div(255)
 const baseColorB = d.vec3f(15, 52, 77).div(255)
 
 const modeDuration = d.f32(60)
-const modeQty = 3
+const modeQty = 4
 
 export const Uniforms = d.struct({ elapsed: d.f32, aspect: d.f32 })
 export type Uniforms = typeof Uniforms
@@ -39,6 +40,7 @@ export function createFragmentShader(
     if (modeIndex === 0) value = wanderingShapes(globals)
     else if (modeIndex === 1) value = circleGrid(globals)
     else if (modeIndex === 2) value = snow(globals)
+    else if (modeIndex === 3) value = cube(globals)
 
     // value = snow(globals)
 

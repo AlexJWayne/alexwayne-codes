@@ -11,7 +11,7 @@ const baseColorA = d.vec3f(9, 46, 71).div(255)
 const baseColorB = d.vec3f(15, 52, 77).div(255)
 
 const modeDuration = d.f32(60)
-const modeQty = 4
+const modeQty = d.i32(4)
 
 export const Uniforms = d.struct({ elapsed: d.f32, aspect: d.f32 })
 export type Uniforms = typeof Uniforms
@@ -26,23 +26,15 @@ export function createFragmentShader(
     in: { uv: d.vec2f },
     out: d.vec4f,
   })(({ uv }) => {
-    let uvWithAspect = uv
-    uvWithAspect.x *= uniformsBuffer.$.aspect
-
     const globals = Globals({
       elapsed: uniformsBuffer.$.elapsed,
-      uv: uvWithAspect,
+      uv: getUvWithAspect(uv, uniformsBuffer.$.aspect),
     })
 
     const modeIndex = getModeIndex(globals)
+    const value = renderMode(globals, modeIndex)
 
-    let value = d.f32(0)
-    if (modeIndex === 0) value = wanderingShapes(globals)
-    else if (modeIndex === 1) value = circleGrid(globals)
-    else if (modeIndex === 2) value = snow(globals)
-    else if (modeIndex === 3) value = cube(globals)
-
-    // value = snow(globals)
+    // value = cube(globals)
 
     // High contrast for debugging
     // return d.vec4f(value, value, value, 1)
@@ -52,11 +44,33 @@ export function createFragmentShader(
   })
 }
 
+function getUvWithAspect(uv: d.v2f, aspect: number): d.v2f {
+  "use gpu"
+
+  const newUv = uv
+  if (aspect > 1.0) {
+    newUv.x *= aspect
+  } else {
+    newUv.y /= aspect
+  }
+  return newUv
+}
+
 function getModeIndex({ elapsed, uv }: Globals): number {
   "use gpu"
 
-  // return 1
   const progress = elapsed / modeDuration + (uv.x / 2 + uv.y) * 0.1
   const modeIndex = std.floor(progress) % modeQty
-  return modeIndex
+  return d.i32(modeIndex)
+}
+
+function renderMode(globals: Globals, modeIndex: number) {
+  "use gpu"
+
+  if (modeIndex === 0) return wanderingShapes(globals)
+  else if (modeIndex === 1) return circleGrid(globals)
+  else if (modeIndex === 2) return snow(globals)
+  else if (modeIndex === 3) return cube(globals)
+
+  return 0
 }

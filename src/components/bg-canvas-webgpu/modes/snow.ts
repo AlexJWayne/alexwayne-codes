@@ -1,11 +1,9 @@
+import tgpu, { type TgpuConst } from "typegpu"
 import * as d from "typegpu/data"
 import * as std from "typegpu/std"
-import { randf } from "@typegpu/noise"
-import tgpu, { type TgpuConst } from "typegpu"
+import * as sdf from "@typegpu/sdf"
 
 import type { Globals } from "../fragment-shader"
-import { opUnion, sdCircle } from "../sdf"
-import type { WgslArray } from "typegpu/data"
 
 const N = d.i32(50)
 const randPer = 4
@@ -32,7 +30,7 @@ export function snow({ elapsed, uv }: Globals): number {
 
     pos.x -= std.sin((pos.y + getSample(i, 3)) * 2) * sizeScalar
 
-    value = opUnion(value, sdCircle(pos.sub(uv), size))
+    value = sdf.opUnion(value, sdf.sdDisk(pos.sub(uv), size))
   }
 
   return 1 - std.step(0.005, value)

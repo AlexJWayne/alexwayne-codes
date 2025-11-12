@@ -1,8 +1,8 @@
 import * as d from "typegpu/data"
 import * as std from "typegpu/std"
+import * as sdf from "@typegpu/sdf"
 
 import type { Globals } from "../fragment-shader"
-import { opUnion, sdCircle } from "../sdf"
 import tgpu from "typegpu"
 
 const timescale = tgpu.const(d.f32, 0.05)
@@ -17,22 +17,22 @@ export function wanderingShapes({ elapsed, uv: _uv }: Globals) {
 
   let value = d.f32(10)
 
-  value = opUnion(
+  value = sdf.opUnion(
     value,
-    sdCircle(uv.sub(d.vec2f(std.sin(time), std.cos(time)).mul(0.8)), 0.3),
+    sdf.sdDisk(uv.sub(d.vec2f(std.sin(time), std.cos(time)).mul(0.8)), 0.3),
   )
 
-  value = opUnion(
+  value = sdf.opUnion(
     value,
-    sdCircle(
+    sdf.sdDisk(
       uv.sub(d.vec2f(std.sin(time * 3), std.cos(time * 2)).mul(0.4)),
       0.5,
     ),
   )
 
-  value = opUnion(
+  value = sdf.opUnion(
     value,
-    sdCircle(
+    sdf.sdDisk(
       uv.sub(d.vec2f(std.sin(time * 4), std.cos(time * 5)).mul(0.5)),
       0.4,
     ),

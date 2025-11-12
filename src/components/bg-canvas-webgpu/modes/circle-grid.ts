@@ -19,7 +19,13 @@ export function circleGrid({ elapsed, uv: _uv }: Globals): number {
 
   const distance = std.fract(std.length(gridUv))
   const timeWithOffset = elapsed + std.sin(uv.x) + std.sin(uv.y)
-  const edge = remap(std.sin(timeWithOffset * 0.25), -1.0, 1.0, 0.05, 0.66)
+  const edge = remap(
+    std.sin(timeWithOffset * 0.25),
+    d.f32(-1),
+    d.f32(1),
+    0.05,
+    0.66,
+  )
   const circle = 1 - std.step(edge, distance)
 
   return circle

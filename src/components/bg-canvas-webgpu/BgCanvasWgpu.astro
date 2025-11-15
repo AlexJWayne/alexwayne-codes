@@ -1,16 +1,34 @@
-<canvas id="bg-canvas" class="fixed top-0 h-dvh w-dvw"></canvas>
+---
+interface Props {
+  gui?: boolean
+}
+
+const { gui } = Astro.props
+---
+
+<canvas id="bg-canvas" class="fixed top-0 h-dvh w-dvw" data-gui={gui}></canvas>
 
 <script>
   import tgpu from "typegpu"
   import * as d from "typegpu/data"
+
   import { vertexShader } from "./vertex-shader"
   import { createFragmentShader, UniformsStruct } from "./fragment-shader"
   import { reportTime } from "./timing"
+  import { type GuiData, createGui } from "./gui"
 
   const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
   const canvas = document.querySelector("#bg-canvas") as HTMLCanvasElement
   canvas.width = canvas.clientWidth
   canvas.height = canvas.clientHeight
+
+  const guiData: GuiData = {
+    forcedModeIndex: d.i32(-1),
+    tinted: true,
+    colorA: { r: 9, g: 46, b: 71 },
+    colorB: { r: 15, g: 52, b: 77 },
+    frameTimeMs: 0,
+  }
 
   const context = canvas.getContext("webgpu") as GPUCanvasContext
   const root = await tgpu.init({
@@ -29,9 +47,7 @@
     const startStr = localStorage.getItem("timeStart")
     if (startStr) {
       const start = parseFloat(startStr)
-      if (performance.timeOrigin - start < 1000 * 60 * 60 * 24) {
-        return start
-      }
+      if (performance.timeOrigin - start < 1000 * 60 * 60 * 24) return start
     }
 
     let newStart = performance.timeOrigin - Math.random() * 1000 * 60 * 60
@@ -62,12 +78,22 @@
     })
     .createPipeline()
     .withIndexBuffer(indexBuffer)
-    .withPerformanceCallback(reportTime)
+    .withPerformanceCallback((start, end) =>
+      reportTime(start, end, (time) => (guiData.frameTimeMs = time)),
+    )
 
   function render() {
     uniformsBuffer.write({
       elapsed: (performance.timeOrigin - start + performance.now()) / 1000,
       aspect: window.innerWidth / window.innerHeight,
+      forcedModeIndex: guiData.forcedModeIndex,
+      tinted: d.i32(guiData.tinted ? 1 : 0),
+      colorA: d
+        .vec3f(guiData.colorA.r, guiData.colorA.g, guiData.colorA.b)
+        .div(255),
+      colorB: d
+        .vec3f(guiData.colorB.r, guiData.colorB.g, guiData.colorB.b)
+        .div(255),
     })
 
     pipeline
@@ -81,6 +107,8 @@
     requestAnimationFrame(render)
   }
   render()
+
+  if (canvas.dataset.gui) createGui(guiData)
 
   export function onCleanup() {
     root.destroy()

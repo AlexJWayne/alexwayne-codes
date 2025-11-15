@@ -7,13 +7,17 @@ import { circleGrid } from "./modes/circle-grid"
 import { snow } from "./modes/snow"
 import { cube } from "./modes/cube"
 
-const baseColorA = d.vec3f(9, 46, 71).div(255)
-const baseColorB = d.vec3f(15, 52, 77).div(255)
-
 const modeDuration = d.f32(60)
-const modeQty = d.i32(4)
+export const modeQty = d.i32(4)
 
-export const UniformsStruct = d.struct({ elapsed: d.f32, aspect: d.f32 })
+export const UniformsStruct = d.struct({
+  elapsed: d.f32,
+  aspect: d.f32,
+  forcedModeIndex: d.i32,
+  tinted: d.i32, // boolean
+  colorA: d.vec3f,
+  colorB: d.vec3f,
+})
 export type UniformsStruct = typeof UniformsStruct
 
 const Globals = d.struct({ elapsed: d.f32, uv: d.vec2f })
@@ -32,14 +36,22 @@ export function createFragmentShader(
     })
 
     const modeIndex = getModeIndex(globals)
-    const value = renderMode(globals, modeIndex)
-
-    // value = cube(globals)
+    const value = renderMode(
+      globals,
+      modeIndex,
+      uniformsBuffer.$.forcedModeIndex,
+    )
 
     // High contrast for debugging
-    // return d.vec4f(value, value, value, 1)
+    if (uniformsBuffer.$.tinted === 0) {
+      return d.vec4f(value, value, value, 1)
+    }
 
-    const tinted = std.mix(baseColorA, baseColorB, value)
+    const tinted = std.mix(
+      uniformsBuffer.$.colorA,
+      uniformsBuffer.$.colorB,
+      value,
+    )
     return d.vec4f(tinted, 1)
   })
 }
@@ -64,13 +76,20 @@ function getModeIndex({ elapsed, uv }: Globals): number {
   return d.i32(modeIndex)
 }
 
-function renderMode(globals: Globals, modeIndex: number) {
+function renderMode(
+  globals: Globals,
+  modeIndex: number,
+  forcedModeIndex: number,
+) {
   "use gpu"
 
-  if (modeIndex === 0) return wanderingShapes(globals)
-  else if (modeIndex === 1) return circleGrid(globals)
-  else if (modeIndex === 2) return snow(globals)
-  else if (modeIndex === 3) return cube(globals)
+  let i = modeIndex
+  if (forcedModeIndex >= 0) i = forcedModeIndex
+
+  if (i === 0) return wanderingShapes(globals)
+  else if (i === 1) return circleGrid(globals)
+  else if (i === 2) return snow(globals)
+  else if (i === 3) return cube(globals)
 
   return 0
 }

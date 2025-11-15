@@ -1,14 +1,20 @@
-const N = 500
+const N = 100
 const times: number[] = Array(N).fill(0)
 let index = 0
 
-export function reportTime(startNs: bigint, endNs: bigint) {
+export function reportTime(
+  startNs: bigint,
+  endNs: bigint,
+  onReport: (avg: number) => void,
+) {
   times[index] = Number(endNs - startNs)
   index++
 
   if (index >= N) {
-    const avg = times.reduce((a, b) => a + b, 0) / N
-    console.log(`AVG Render time: ${(avg / 1_000_000).toFixed(2)} ms`)
+    const avgNs = times.reduce((a, b) => a + b, 0) / N
+    const avgMs = avgNs / 1_000_000
+
     index = 0
+    onReport(avgMs)
   }
 }

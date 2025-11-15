@@ -1,6 +1,6 @@
 import tgpu from "typegpu"
 import * as d from "typegpu/data"
-import { Uniforms } from "./fragment-shader"
+import { UniformsStruct } from "./fragment-shader"
 
 export const vertexShader = tgpu["~unstable"].vertexFn({
   in: { idx: d.builtin.vertexIndex },

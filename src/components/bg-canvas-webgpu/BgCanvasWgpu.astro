@@ -4,7 +4,7 @@
   import tgpu from "typegpu"
   import * as d from "typegpu/data"
   import { vertexShader } from "./vertex-shader"
-  import { createFragmentShader, Uniforms } from "./fragment-shader"
+  import { createFragmentShader, UniformsStruct } from "./fragment-shader"
   import { reportTime } from "./timing"
 
   const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
@@ -34,7 +34,7 @@
       }
     }
 
-    let newStart = performance.timeOrigin
+    let newStart = performance.timeOrigin - Math.random() * 1000 * 60 * 60
     localStorage.setItem("timeStart", newStart.toString())
     return newStart
   }
@@ -44,7 +44,7 @@
     .createBuffer(d.arrayOf(d.u16, 6), [0, 2, 1, 0, 3, 2])
     .$usage("index")
 
-  const uniformsBuffer = root.createBuffer(Uniforms).$usage("storage")
+  const uniformsBuffer = root.createBuffer(UniformsStruct).$usage("storage")
   const vertexLayout = tgpu.vertexLayout(d.arrayOf(d.vec4f))
 
   console.log(

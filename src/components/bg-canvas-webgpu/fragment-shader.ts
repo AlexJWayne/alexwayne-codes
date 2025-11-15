@@ -13,14 +13,14 @@ const baseColorB = d.vec3f(15, 52, 77).div(255)
 const modeDuration = d.f32(60)
 const modeQty = d.i32(4)
 
-export const Uniforms = d.struct({ elapsed: d.f32, aspect: d.f32 })
-export type Uniforms = typeof Uniforms
+export const UniformsStruct = d.struct({ elapsed: d.f32, aspect: d.f32 })
+export type UniformsStruct = typeof UniformsStruct
 
 const Globals = d.struct({ elapsed: d.f32, uv: d.vec2f })
 export type Globals = d.Infer<typeof Globals>
 
 export function createFragmentShader(
-  uniformsBuffer: TgpuBufferReadonly<Uniforms>,
+  uniformsBuffer: TgpuBufferReadonly<UniformsStruct>,
 ) {
   return tgpu["~unstable"].fragmentFn({
     in: { uv: d.vec2f },

@@ -16,7 +16,8 @@ function scene(elapsed: number, point: d.v3f): number {
 
   let value = myCube(time, point)
   for (let i = d.i32(0); i < 6; i++) {
-    value = sdf.opSmoothUnion(value, mySphere(time * d.f32(i), point), 0.5)
+    const sphereTime = time * (d.f32(i) * 0.5 + 1)
+    value = sdf.opSmoothUnion(value, mySphere(sphereTime, point), 0.5)
   }
   return value
 }
@@ -39,8 +40,8 @@ function mySphere(time: number, point: d.v3f): number {
 
   let p = point
   p.x += std.cos(time * 1.17) * 1.2
-  p.y -= std.sin(time) //* 1
-  p.z += std.sin(time * 0.5) //* 1
+  p.y -= std.sin(time)
+  p.z += std.sin(time * 0.5)
   return sdf.sdSphere(p, 0.25)
 }
 

@@ -38,9 +38,4 @@ export function createGui(guiData: GuiData) {
     label: "Frame ms",
     readonly: true,
   })
-  pane.addBinding(guiData, "frameTimeMs", {
-    label: "Frame FPS",
-    readonly: true,
-    format: (value) => `${(1000 / value).toFixed(0)}`,
-  })
 }

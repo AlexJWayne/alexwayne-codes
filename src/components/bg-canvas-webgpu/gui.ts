@@ -3,7 +3,7 @@ import { modeQty } from "./fragment-shader"
 
 export interface GuiData {
   forcedModeIndex: number
-  tinted: true
+  tinted: boolean
   colorA: Record<"r" | "g" | "b", number>
   colorB: Record<"r" | "g" | "b", number>
   frameTimeMs: number
@@ -12,6 +12,9 @@ export interface GuiData {
 export function createGui(guiData: GuiData) {
   const bgMode = localStorage.getItem("bgMode")
   if (bgMode !== null) guiData.forcedModeIndex = +bgMode
+
+  const isTinted = localStorage.getItem("isTinted")
+  if (isTinted !== null) guiData.tinted = isTinted === "true"
 
   const pane = new Pane()
 
@@ -28,7 +31,11 @@ export function createGui(guiData: GuiData) {
 
   pane.addBlade({ view: "separator" })
 
-  pane.addBinding(guiData, "tinted", { label: "Tinted" })
+  pane
+    .addBinding(guiData, "tinted", { label: "Tinted" })
+    .on("change", ({ value }) =>
+      localStorage.setItem("isTinted", value ? "true" : "false"),
+    )
   pane.addBinding(guiData, "colorA", { label: "Color A" })
   pane.addBinding(guiData, "colorB", { label: "Color B" })
 

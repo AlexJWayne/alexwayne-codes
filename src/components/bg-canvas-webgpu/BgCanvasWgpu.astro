@@ -19,8 +19,8 @@ const { gui } = Astro.props
 
   const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
   const canvas = document.querySelector("#bg-canvas") as HTMLCanvasElement
-  canvas.width = canvas.clientWidth
-  canvas.height = canvas.clientHeight
+  canvas.width = canvas.clientWidth / 2
+  canvas.height = canvas.clientHeight / 2
 
   const guiData: GuiData = {
     forcedModeIndex: d.i32(-1),

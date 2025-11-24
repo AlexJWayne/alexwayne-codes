@@ -5,7 +5,7 @@ import * as sdf from "@typegpu/sdf"
 import type { Globals } from "../fragment-shader"
 
 const MAX_STEPS = d.i32(32)
-const MAX_DISTANCE = d.f32(50)
+const MAX_DISTANCE = d.f32(6)
 const EPSILON = d.f32(0.005)
 
 const TIME_SCALE = d.f32(0.2)

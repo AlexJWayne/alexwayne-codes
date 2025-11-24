@@ -34,7 +34,7 @@ export function infSdf({ elapsed, uv }: Globals): number {
   const cameraPosition = d.vec3f(
     std.sin(time * 0.4) * 1.3,
     std.cos(time * 0.4) * 1.3,
-    -time * 4,
+    time * 4,
   )
   const rayDirection = std.normalize(d.vec3f(uv, -1.5))
 

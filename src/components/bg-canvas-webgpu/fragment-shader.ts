@@ -2,14 +2,13 @@ import tgpu, { type TgpuBufferReadonly } from "typegpu"
 import * as d from "typegpu/data"
 import * as std from "typegpu/std"
 
-import { wanderingShapes } from "./modes/wandering-shapes"
 import { circleGrid } from "./modes/circle-grid"
-import { snow } from "./modes/snow"
 import { cube } from "./modes/cube"
 import { infSdf } from "./modes/inf-sdf"
+import { ball } from "./modes/ball"
 
-const modeDuration = d.f32(60)
-export const modeQty = d.i32(3)
+const modeDuration = d.f32(30)
+export const modeQty = d.i32(4)
 
 export const UniformsStruct = d.struct({
   elapsed: d.f32,
@@ -90,6 +89,7 @@ function renderMode(
   if (i === 0) return circleGrid(globals)
   else if (i === 1) return cube(globals)
   else if (i === 2) return infSdf(globals)
+  else if (i === 3) return ball(globals)
 
   return 0
 }

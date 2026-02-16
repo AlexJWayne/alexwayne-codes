@@ -26,7 +26,7 @@ canvas.height = canvas.clientHeight / (devMode ? 1 : 2)
 const context = canvas.getContext("webgpu") as GPUCanvasContext
 const root = await tgpu.init({
   device: {
-    requiredFeatures: ["timestamp-query"],
+    optionalFeatures: ["timestamp-query"],
   },
 })
 

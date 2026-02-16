@@ -10,7 +10,7 @@ const timescale = tgpu.const(d.f32, 0.05)
 export function wanderingShapes({ elapsed, uv: _uv }: Globals) {
   "use gpu"
 
-  let uv = _uv
+  let uv = d.vec2f(_uv)
   uv.x = (uv.x / uv.y) * 0.5 // perspective effect
 
   const time = elapsed * timescale.$

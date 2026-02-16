@@ -41,7 +41,7 @@ function myCube(time: number, point: d.v3f): number {
 function mySphere(time: number, point: d.v3f): number {
   "use gpu"
 
-  let p = point
+  let p = d.vec3f(point)
   p.x += std.cos(time * 1.17) * 1.2
   p.y -= std.sin(time)
   p.z += std.sin(time * 0.5)

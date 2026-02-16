@@ -59,7 +59,7 @@ export function createFragmentShader(
 function getUvWithAspect(uv: d.v2f, aspect: number): d.v2f {
   "use gpu"
 
-  const newUv = uv
+  const newUv = d.vec2f(uv)
   if (aspect > 1.0) {
     newUv.x *= aspect
   } else {

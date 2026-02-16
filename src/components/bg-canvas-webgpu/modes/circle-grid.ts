@@ -7,7 +7,7 @@ import { remap, rotate } from "../lib"
 export function circleGrid({ elapsed, uv: _uv }: Globals): number {
   "use gpu"
 
-  let uv = _uv
+  let uv = d.vec2f(_uv)
   uv = rotate(uv, elapsed * 0.015)
   uv = uv.add(
     d.vec2f(std.sin(elapsed * 0.1) * 0.15, std.cos(elapsed * 0.13) * 0.25),

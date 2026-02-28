@@ -3,6 +3,6 @@
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"],
   "compilerOptions": {
-    "types": ["@webgpu/types"]
-  }
+    "types": ["tsover", "@webgpu/types"],
+  },
 }

@@ -1,100 +1,107 @@
-import * as d from "typegpu/data"
-import * as std from "typegpu/std"
-import * as sdf from "@typegpu/sdf"
+import {
+  f32,
+  i32,
+  mat4x4f,
+  vec3f,
+  vec4f,
+  type m4x4f,
+  type v3f,
+} from "typegpu/data"
+import { dot, max, normalize, round, sin, smoothstep } from "typegpu/std"
+import { sdSphere } from "@typegpu/sdf"
 
 import type { Globals } from "../fragment-shader"
 import { rotate } from "../lib"
 
-const MAX_STEPS = d.i32(20)
-const MAX_DISTANCE = d.f32(10)
-const EPSILON = d.f32(0.001)
+const MAX_STEPS = i32(20)
+const MAX_DISTANCE = f32(10)
+const EPSILON = f32(0.001)
 
-const TIME_SCALE = d.f32(1)
+const TIME_SCALE = f32(1)
 
-const UP = d.vec3f(0, 1, 0)
-const RIGHT = d.vec3f(1, 0, 0)
-const FORWARD = d.vec3f(0, 0, 1)
+const UP = vec3f(0, 1, 0)
+const RIGHT = vec3f(1, 0, 0)
+const FORWARD = vec3f(0, 0, 1)
 
-const SPIKE_DENSITY = d.f32(30)
-const CAMERA_SPEED = d.f32(0.25)
+const SPIKE_DENSITY = f32(30)
+const CAMERA_SPEED = f32(0.25)
 
-const lightDirection = std.normalize(d.vec3f(0, 1, 1))
+const lightDirection = normalize(vec3f(0, 1, 1))
 
-function scene(time: number, point: d.v3f) {
+function scene(time: number, point: v3f) {
   "use gpu"
 
-  const S = d.f32(2)
+  const S = f32(2)
 
-  let p = d.vec3f(
-    point.x - std.round(point.x / S) * S,
-    point.y - std.round(point.y / S) * S,
+  let p = vec3f(
+    point.x - round(point.x / S) * S,
+    point.y - round(point.y / S) * S,
     point.z,
   )
 
-  const id = std.round(point.div(S))
+  const id = round(point / S)
 
   p = rotateVec3(
     p,
-    d.mat4x4f
-      .identity()
-      .mul(d.mat4x4f.rotationX(time * 0.2 + id.x * 2))
-      .mul(d.mat4x4f.rotationZ(time * 0.3 + id.z * 3)),
+    mat4x4f.identity() *
+      mat4x4f.rotationX(time * 0.2 + id.x * 2) *
+      mat4x4f.rotationZ(time * 0.3 + id.z * 3),
   )
 
-  const pointNormalized = std.normalize(p)
+  const pointNormalized = normalize(p)
 
-  const angle = d.vec3f(
-    std.dot(RIGHT, pointNormalized),
-    std.dot(UP, pointNormalized),
-    std.dot(FORWARD, pointNormalized),
+  const angle = vec3f(
+    dot(RIGHT, pointNormalized),
+    dot(UP, pointNormalized),
+    dot(FORWARD, pointNormalized),
   )
 
   const spikeHeight = 0.01
 
-  const r = d.f32(0.8) + std.sin(time + angle.x * SPIKE_DENSITY) * spikeHeight
+  const r = f32(0.8) + sin(time + angle.x * SPIKE_DENSITY) * spikeHeight
 
-  return sdf.sdSphere(p, r)
+  return sdSphere(p, r)
 }
 
-function rotateVec3(vec: d.v3f, rotation: d.m4x4f): d.v3f {
+function rotateVec3(vec: v3f, rotation: m4x4f): v3f {
   "use gpu"
-  return d.vec4f(vec, 1).mul(rotation).xyz
+  return (vec4f(vec, 1) * rotation).xyz
 }
 
-function getNormal(elapsed: number, p: d.v3f): d.v3f {
+function getNormal(elapsed: number, p: v3f): v3f {
   "use gpu"
 
-  const k1 = d.vec3f(1.0, -1.0, -1.0)
-  const k2 = d.vec3f(-1.0, -1.0, 1.0)
-  const k3 = d.vec3f(-1.0, 1.0, -1.0)
-  const k4 = d.vec3f(1.0, 1.0, 1.0)
+  const k1 = vec3f(1.0, -1.0, -1.0)
+  const k2 = vec3f(-1.0, -1.0, 1.0)
+  const k3 = vec3f(-1.0, 1.0, -1.0)
+  const k4 = vec3f(1.0, 1.0, 1.0)
 
-  const n1 = k1.mul(scene(elapsed, p.add(k1.mul(EPSILON))))
-  const n2 = k2.mul(scene(elapsed, p.add(k2.mul(EPSILON))))
-  const n3 = k3.mul(scene(elapsed, p.add(k3.mul(EPSILON))))
-  const n4 = k4.mul(scene(elapsed, p.add(k4.mul(EPSILON))))
+  const n1 = k1 * scene(elapsed, p + k1 * EPSILON)
+  const n2 = k2 * scene(elapsed, p + k2 * EPSILON)
+  const n3 = k3 * scene(elapsed, p + k3 * EPSILON)
+  const n4 = k4 * scene(elapsed, p + k4 * EPSILON)
 
-  return std.normalize(n1.add(n2).add(n3).add(n4))
+  return normalize(n1 + n2 + n3 + n4)
 }
 
 export function ball({ elapsed, uv }: Globals): number {
   "use gpu"
 
   const time = elapsed * TIME_SCALE
-  const cameraPosition = d.vec3f(
+  const cameraPosition = vec3f(
     -time * CAMERA_SPEED - time * 0.2,
-    time * CAMERA_SPEED + std.sin(time * 0.3),
+    time * CAMERA_SPEED + sin(time * 0.3),
     5,
   )
-  const rayDirection = std.normalize(d.vec3f(rotate(uv, Math.PI / 4), -1.5))
+  const rayDirection = normalize(vec3f(rotate(uv, Math.PI / 4), -1.5))
 
-  let totalDist = d.f32()
-  let dist = d.f32()
-  let normal = d.vec3f()
+  let totalDist = f32()
+  let dist = f32()
+  let normal = vec3f()
   let hit = false
 
   for (let i = 0; i < MAX_STEPS; i++) {
-    const point = cameraPosition.add(rayDirection.mul(totalDist))
+    const point = cameraPosition + rayDirection * totalDist
     dist = scene(time, point)
     if (dist < EPSILON) {
       hit = true
@@ -107,9 +114,9 @@ export function ball({ elapsed, uv }: Globals): number {
   }
 
   if (hit) {
-    const lightIntensity = std.max(std.dot(normal, lightDirection), 0.0)
-    return std.smoothstep(0.5, 0.65, lightIntensity)
+    const lightIntensity = max(dot(normal, lightDirection), 0.0)
+    return smoothstep(0.5, 0.65, lightIntensity)
   }
 
-  return d.f32(0)
+  return f32(0)
 }

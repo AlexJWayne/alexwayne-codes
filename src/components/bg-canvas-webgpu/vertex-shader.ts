@@ -1,23 +1,22 @@
 import tgpu from "typegpu"
-import * as d from "typegpu/data"
-import { UniformsStruct } from "./fragment-shader"
+import { builtin, vec2f, vec4f } from "typegpu/data"
 
-export const vertexShader = tgpu["~unstable"].vertexFn({
-  in: { idx: d.builtin.vertexIndex },
+export const vertexShader = tgpu.vertexFn({
+  in: { idx: builtin.vertexIndex },
   out: {
-    pos: d.builtin.position,
-    uv: d.vec2f,
+    pos: builtin.position,
+    uv: vec2f,
   },
 })(({ idx }) => {
   const vertices = [
-    d.vec2f(-1, -1),
-    d.vec2f(1, -1),
-    d.vec2f(1, 1),
-    d.vec2f(-1, 1),
+    vec2f(-1, -1), //
+    vec2f(1, -1),
+    vec2f(1, 1),
+    vec2f(-1, 1),
   ]
   const vertex = vertices[idx]
   return {
-    pos: d.vec4f(vertex, 0, 1),
+    pos: vec4f(vertex, 0, 1),
     uv: vertex,
   }
 })

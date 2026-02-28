@@ -64,12 +64,13 @@ console.log(
   }),
 )
 
-const pipeline = root["~unstable"]
-  .withVertex(vertexShader, { foo: vertexLayout.attrib })
-  .withFragment(createFragmentShader(uniformsBuffer.as("readonly")), {
-    format: presentationFormat,
+const pipeline = root
+  .createRenderPipeline({
+    vertex: vertexShader,
+    fragment: createFragmentShader(uniformsBuffer.as("readonly")),
+    targets: { format: presentationFormat },
+    attribs: { foo: vertexLayout.attrib },
   })
-  .createPipeline()
   .withIndexBuffer(indexBuffer)
   .withPerformanceCallback((start, end) =>
     reportTime(start, end, (time) => (guiData.frameTimeMs = time)),

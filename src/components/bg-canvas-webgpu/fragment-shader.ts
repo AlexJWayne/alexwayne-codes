@@ -1,34 +1,43 @@
 import tgpu, { type TgpuBufferReadonly } from "typegpu"
-import * as d from "typegpu/data"
-import * as std from "typegpu/std"
+import {
+  f32,
+  i32,
+  struct,
+  vec2f,
+  vec3f,
+  vec4f,
+  type Infer,
+  type v2f,
+} from "typegpu/data"
+import { floor, mix } from "typegpu/std"
 
 import { circleGrid } from "./modes/circle-grid"
 import { cube } from "./modes/cube"
 import { infSdf } from "./modes/inf-sdf"
 import { ball } from "./modes/ball"
 
-const modeDuration = d.f32(30)
-export const modeQty = d.i32(4)
+const modeDuration = f32(30)
+export const modeQty = i32(4)
 
-export const UniformsStruct = d.struct({
-  elapsed: d.f32,
-  aspect: d.f32,
-  forcedModeIndex: d.i32,
-  tinted: d.i32, // boolean
-  colorA: d.vec3f,
-  colorB: d.vec3f,
+export const UniformsStruct = struct({
+  elapsed: f32,
+  aspect: f32,
+  forcedModeIndex: i32,
+  tinted: i32, // boolean
+  colorA: vec3f,
+  colorB: vec3f,
 })
 export type UniformsStruct = typeof UniformsStruct
 
-const Globals = d.struct({ elapsed: d.f32, uv: d.vec2f })
-export type Globals = d.Infer<typeof Globals>
+const Globals = struct({ elapsed: f32, uv: vec2f })
+export type Globals = Infer<typeof Globals>
 
 export function createFragmentShader(
   uniformsBuffer: TgpuBufferReadonly<UniformsStruct>,
 ) {
-  return tgpu["~unstable"].fragmentFn({
-    in: { uv: d.vec2f },
-    out: d.vec4f,
+  return tgpu.fragmentFn({
+    in: { uv: vec2f },
+    out: vec4f,
   })(({ uv }) => {
     const globals = Globals({
       elapsed: uniformsBuffer.$.elapsed,
@@ -44,22 +53,18 @@ export function createFragmentShader(
 
     // High contrast for debugging
     if (uniformsBuffer.$.tinted === 0) {
-      return d.vec4f(value, value, value, 1)
+      return vec4f(value, value, value, 1)
     }
 
-    const tinted = std.mix(
-      uniformsBuffer.$.colorA,
-      uniformsBuffer.$.colorB,
-      value,
-    )
-    return d.vec4f(tinted, 1)
+    const tinted = mix(uniformsBuffer.$.colorA, uniformsBuffer.$.colorB, value)
+    return vec4f(tinted, 1)
   })
 }
 
-function getUvWithAspect(uv: d.v2f, aspect: number): d.v2f {
+function getUvWithAspect(uv: v2f, aspect: number): v2f {
   "use gpu"
 
-  const newUv = d.vec2f(uv)
+  const newUv = vec2f(uv)
   if (aspect > 1.0) {
     newUv.x *= aspect
   } else {
@@ -72,8 +77,8 @@ function getModeIndex({ elapsed, uv }: Globals): number {
   "use gpu"
 
   const progress = elapsed / modeDuration + (uv.x / 2 + uv.y) * 0.1
-  const modeIndex = std.floor(progress) % modeQty
-  return d.i32(modeIndex)
+  const modeIndex = floor(progress) % modeQty
+  return i32(modeIndex)
 }
 
 function renderMode(

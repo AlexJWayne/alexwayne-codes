@@ -1,26 +1,33 @@
-import { f32, vec2f, vec3f, vec4f } from "typegpu/data"
-import { abs, length, select, sin, smoothstep } from "typegpu/std"
+import { vec3f, vec4f } from "typegpu/data"
+import { abs, floor, fract, length, sin, smoothstep, step } from "typegpu/std"
 
 import { createShaderCanvas } from "typegpu-shader-canvas"
 
 createShaderCanvas(
   document.getElementById("shader-canvas-example"),
-  ({ uv, time, mouse, aspectRatio }) => {
+  ({ time, uvCenteredAspect, mouse }) => {
     "use gpu"
 
-    let color = vec3f()
+    const scale = 5 * (1 + sin(time * 0.3) * 0.3)
 
-    const r = smoothstep(0, 0.08, abs(uv.y + sin(time * 3 + uv.x * 4) * 0.2))
-    const g = smoothstep(0, 0.07, abs(uv.y + sin(time * 2 + uv.x * 5) * 0.2))
-    const b = smoothstep(0, 0.06, abs(uv.y + sin(time * 1 + uv.x * 6) * 0.2))
-    color = color.add(vec3f(1).sub(vec3f(r, g, b)))
+    const gridValue = length(fract(uvCenteredAspect.mul(scale)).sub(0.5))
+    const outerValue = smoothstep(0.2, 1, gridValue)
+    const innerValue = smoothstep(0.35, 0.0, gridValue)
 
-    const mouseDistance = mouse.uv.sub(uv)
-    color = color.add(
-      smoothstep(0.2, 0, length(mouseDistance.div(vec2f(1, aspectRatio)))) *
-        select(0.5, f32(1), mouse.down === 1),
+    const fragmentCell = floor(uvCenteredAspect.mul(scale))
+    const mouseCell = floor(mouse.uvCenteredAspect.mul(scale))
+    const diff = fragmentCell.sub(mouseCell)
+    const inMouseCell =
+      (1 - step(0.5, abs(diff.x))) * //
+      (1 - step(0.5, abs(diff.y)))
+
+    const r = sin(uvCenteredAspect.x * scale - time) * 0.5 + 0.6
+    const b = sin(uvCenteredAspect.y * scale + time) * 0.5 + 0.6
+    return vec4f(
+      vec3f(r, 0, b)
+        .mul(outerValue)
+        .add(vec3f(innerValue * inMouseCell)),
+      1,
     )
-
-    return vec4f(color, 1)
   },
 ).startRendering()

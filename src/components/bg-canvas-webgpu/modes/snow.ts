@@ -1,7 +1,7 @@
+import * as sdf from "@typegpu/sdf"
 import tgpu, { type TgpuConst } from "typegpu"
 import * as d from "typegpu/data"
 import * as std from "typegpu/std"
-import * as sdf from "@typegpu/sdf"
 
 import type { Globals } from "../fragment-shader"
 
@@ -18,7 +18,7 @@ export function snow({ elapsed, uv }: Globals): number {
     const sizeScalar = getSample(i, 0)
     const size = sizeScalar * 0.05 + 0.01
 
-    let pos = d
+    const pos = d
       .vec2f(
         getSample(i, 1), //
         getSample(i, 2),

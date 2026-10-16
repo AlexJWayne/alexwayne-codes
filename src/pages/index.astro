@@ -15,42 +15,53 @@ const posts = (await getCollection("posts"))
 ---
 
 <Layout>
-  <p class="relative -top-8">
-    I'm a software engineer by day,{" "}
-    <span class="font-semibold text-indigo-500 drop-shadow-dark-glow">
+  <p class="m-0 text-base leading-relaxed text-slate-300 sm:text-lg">
+    I'm a software engineer by day,
+    <br />
+    <span class="text-indigo-300 drop-shadow-dark-glow">
       and also by night.
     </span>
   </p>
 
   <GridList title="A few of the things I've made">
-    {posts.map((post) => (
-      <GridListItem href={post.id} image={post.data.cover?.src}>
+    {posts.map((post, index) => (
+      <GridListItem
+        href={`/${post.id}`}
+        image={post.data.cover}
+        loading={index < 2 ? "eager" : "lazy"}
+      >
         {post.data.title}
       </GridListItem>
     ))}
   </GridList>
 
-  <h2>A few of my links</h2>
-
-  <ul class="mb-12 list-disc pl-6">
-    <li>
-      <a href="https://github.com/AlexJWayne">Github</a>
-    </li>
-    <li>
-      <a href="http://alexwayne.rocks">Music</a>
-    </li>
-  </ul>
-
-  <h2>A few of the things I use</h2>
-
-  <ul class="mb-12 list-disc pl-6">
-    <li>
-      <a href="https://svalboard.com/">Svalboard</a> in{" "}
-      <strong>Colemak DH</strong>
-    </li>
-    <li>
-      <a href="https://zed.dev">Zed</a> in{" "}
-      <a href="https://zed.dev/docs/vim">Vim mode</a>
-    </li>
-  </ul>
+  <aside
+    class="mt-12 grid gap-8 border-t border-white/15 pt-6 text-base leading-relaxed text-slate-300 sm:grid-cols-2 [&_a]:text-blue-100 [&_a]:transition-colors [&_a:hover]:text-violet-300 [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-4 [&_a:focus-visible]:outline-violet-300"
+    aria-label="About me"
+  >
+    <section>
+      <h2 class="mb-3 text-base font-medium">A few of my links</h2>
+      <ul class="space-y-1">
+        <li>
+          <a href="https://github.com/AlexJWayne">Github</a>
+        </li>
+        <li>
+          <a href="http://alexwayne.rocks">Music</a>
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h2 class="mb-3 text-base font-medium">A few of the things I use</h2>
+      <ul class="space-y-1">
+        <li>
+          <a href="https://svalboard.com/">Svalboard</a> in{" "}
+          <strong class="font-medium">Colemak DH</strong>
+        </li>
+        <li>
+          <a href="https://zed.dev">Zed</a> in{" "}
+          <a href="https://zed.dev/docs/vim">Vim mode</a>
+        </li>
+      </ul>
+    </section>
+  </aside>
 </Layout>

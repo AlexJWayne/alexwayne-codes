@@ -1,21 +1,36 @@
 ---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
 interface Props {
   href: string
-  image?: string
+  image?: ImageMetadata
+  loading?: "eager" | "lazy"
 }
 
-const { href, image } = Astro.props
+const { href, image, loading = "lazy" } = Astro.props
 ---
 
-<li class="m-0!">
+<li>
   <a
     href={href}
-    class="block h-full w-full scale-100 leading-5 no-underline transition-all hover:text-violet-400"
+    class="block h-full no-underline transition-colors hover:text-violet-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-300"
   >
-    <slot />
-    <div
-      class="h-28 rounded-lg bg-black/50 bg-cover bg-center px-2"
-      style={image ? { backgroundImage: `url(${image})` } : {}}
-    ></div>
+    <div class="aspect-video overflow-hidden rounded-xs bg-slate-950">
+      <!-- Image sizes match the container width, responsive padding, and grid gap. -->
+      {image && (
+        <Image
+          src={image}
+          alt=""
+          widths={[480, 960]}
+          sizes="(min-width: 960px) 415px, (min-width: 640px) calc((100vw - 130px) / 2), calc(100vw - 60px)"
+          loading={loading}
+          class="h-full w-full object-contain"
+        />
+      )}
+    </div>
+    <h3 class="mt-3 text-lg leading-normal font-medium">
+      <slot />
+    </h3>
   </a>
 </li>

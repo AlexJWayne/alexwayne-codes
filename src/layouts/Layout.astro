@@ -5,9 +5,9 @@ import "../styles/global.css"
 
 <!doctype html>
 <html lang="en">
-  <head class="m-0 h-screen w-screen">
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>AlexWayne.codes</title>
@@ -16,29 +16,23 @@ import "../styles/global.css"
     </style>
   </head>
 
-  <body
-    class="m-0 h-screen w-screen bg-linear-to-b from-blue-900 to-sky-950 to-[900px] py-10 font-normal"
-  >
+  <body class="m-0 min-h-screen bg-linear-to-b from-blue-900 to-sky-950 to-[900px] py-10 font-normal text-blue-100">
     <BgCanvasWgpu />
-    <div class="relative m-auto w-[880px] p-10 backdrop-blur" id="content">
-      <a href="/">
-        <h1
-          class="-mt-10 mb-10 font-[Jura] text-5xl font-bold text-transparent decoration-orange-400 drop-shadow-md transition hover:translate-x-2"
+    <div
+      class="relative m-auto w-full max-w-3xl px-6 pb-10 backdrop-blur sm:px-10"
+      id="content"
+    >
+      <h1 class="mt-0 mb-6 font-[Jura] text-[clamp(24px,7.5vw,40px)] leading-[1.2] font-[700] tracking-[-1.2px]">
+        <a
+          href="/"
+          class="text-[#fbad64] no-underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-300"
         >
-          <span
-            class="bg-linear-to-tr from-red-400 to-yellow-500 bg-clip-text"
-            >AlexWayne</span
-          ><span
-            class="bg-linear-to-br from-yellow-500 to-red-500 bg-clip-text"
-            >&lt;Codes&gt;</span
-          >
-        </h1>
-      </a>
-      <div
-        class="prose prose-invert prose-h2:font-medium prose-a:transition-all hover:prose-a:text-indigo-400"
-      >
+          AlexWayne<span class="text-orange-400">&lt;Codes&gt;</span>
+        </a>
+      </h1>
+      <main>
         <slot />
-      </div>
+      </main>
     </div>
   </body>
 </html>

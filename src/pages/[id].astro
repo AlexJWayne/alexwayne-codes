@@ -15,14 +15,20 @@ const { Content } = await render(post)
 ---
 
 <Layout>
-  <div class="flex">
-    <h2 class="m-0!">{post.data.title}</h2>
-    <div class="flex-1 text-right text-sm">
-      {post.data.source && <a href={post.data.source} class="font-normal">
-        Source Code
-      </a>}
-      {post.data.date && <div>{post.data.date.toISOString().slice(0, 10)}</div>}
+  <article class="prose prose-invert prose-h2:font-medium prose-a:transition-colors hover:prose-a:text-indigo-400">
+    <div class="flex flex-col items-start gap-4 sm:flex-row">
+      <h2 class="m-0! min-w-0 flex-1">{post.data.title}</h2>
+      <div class="shrink-0 text-sm sm:text-right">
+        {post.data.source && (
+          <a href={post.data.source} class="font-normal">
+            Source Code
+          </a>
+        )}
+        {post.data.date && (
+          <div>{post.data.date.toISOString().slice(0, 10)}</div>
+        )}
+      </div>
     </div>
-  </div>
-  <Content />
+    <Content />
+  </article>
 </Layout>

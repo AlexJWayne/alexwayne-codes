@@ -3,7 +3,12 @@ import { Code } from "astro:components"
 import code from "./2026-02-15-typgpu-shader-canvas-a.ts?raw"
 ---
 
-<canvas id="shader-canvas-example" width="780" height="600"></canvas>
+<canvas
+  class="h-auto max-w-full"
+  id="shader-canvas-example"
+  width="780"
+  height="600"
+></canvas>
 
 <script>
   import "./2026-02-15-typgpu-shader-canvas-a.ts"

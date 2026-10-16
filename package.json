@@ -4,32 +4,34 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "check": "astro check && tsc --noEmit",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/tailwind": "^5.1.5",
     "@typegpu/sdf": "^0.10.0",
-    "astro": "^5.15.2",
-    "tailwindcss": "^3.4.17",
+    "astro": "^7.4.0",
+    "tailwindcss": "^4.3.3",
     "tweakpane": "^4.0.5",
-    "typegpu": "^0.10.1",
+    "typegpu": "^0.10.2",
     "typegpu-shader-canvas": "^0.5.2"
   },
   "devDependencies": {
-    "@astrojs/mdx": "^4.3.13",
-    "@tailwindcss/typography": "^0.5.16",
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/mdx": "^8.1.0",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
     "@tweakpane/core": "^2.0.5",
-    "@types/three": "^0.173.0",
-    "@webgpu/types": "^0.1.66",
-    "prettier": "^3.6.2",
-    "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.10",
-    "typescript": "npm:tsover@latest",
-    "unplugin-typegpu": "^0.10.0"
+    "@webgpu/types": "^0.1.74",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "typescript": "npm:tsover@6.0.2",
+    "unplugin-typegpu": "^0.10.2"
   },
   "overrides": {
-    "typescript": "npm:tsover@latest"
+    "typescript": "$typescript",
+    "tinyest": "0.3.1"
   }
 }

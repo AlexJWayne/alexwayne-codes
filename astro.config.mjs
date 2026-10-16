@@ -1,17 +1,17 @@
 // @ts-check
 import { defineConfig } from "astro/config"
 import mdx from "@astrojs/mdx"
-import tailwind from "@astrojs/tailwind"
+import tailwindcss from "@tailwindcss/vite"
 import typegpuPlugin from "unplugin-typegpu/vite"
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://alexjwayne.github.io/",
-  integrations: [mdx(), tailwind()],
+  integrations: [mdx()],
   vite: {
-    plugins: [typegpuPlugin({})],
+    plugins: [tailwindcss(), typegpuPlugin({})],
     optimizeDeps: {
-      esbuildOptions: { target: "esnext" },
+      rolldownOptions: { transform: { target: "esnext" } },
     },
     build: {
       target: "esnext",

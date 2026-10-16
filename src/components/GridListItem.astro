@@ -7,7 +7,7 @@ interface Props {
 const { href, image } = Astro.props
 ---
 
-<li class="m-0">
+<li class="m-0!">
   <a
     href={href}
     class="block h-full w-full scale-100 leading-5 no-underline transition-all hover:text-violet-400"
@@ -16,7 +16,6 @@ const { href, image } = Astro.props
     <div
       class="h-28 rounded-lg bg-black/50 bg-cover bg-center px-2"
       style={image ? { backgroundImage: `url(${image})` } : {}}
-    >
-    </div>
+    ></div>
   </a>
 </li>

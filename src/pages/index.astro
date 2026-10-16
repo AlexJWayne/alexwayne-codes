@@ -16,40 +16,41 @@ const posts = (await getCollection("posts"))
 
 <Layout>
   <p class="relative -top-8">
-    I'm a software developer by day, <span
-      class="font-semibold text-indigo-500 drop-shadow-dark-glow"
-      >and also by night.</span
-    >
+    I'm a software engineer by day,{" "}
+    <span class="font-semibold text-indigo-500 drop-shadow-dark-glow">
+      and also by night.
+    </span>
   </p>
 
   <GridList title="A few of the things I've made">
-    {
-      posts.map((post) => (
-        <GridListItem href={post.id} image={post.data.cover?.src}>
-          {post.data.title}
-        </GridListItem>
-      ))
-    }
+    {posts.map((post) => (
+      <GridListItem href={post.id} image={post.data.cover?.src}>
+        {post.data.title}
+      </GridListItem>
+    ))}
   </GridList>
 
   <h2>A few of my links</h2>
 
   <ul class="mb-12 list-disc pl-6">
-    <li><a href="https://github.com/AlexJWayne">Github</a></li>
-    <li><a href="http://alexwayne.rocks">Music</a></li>
+    <li>
+      <a href="https://github.com/AlexJWayne">Github</a>
+    </li>
+    <li>
+      <a href="http://alexwayne.rocks">Music</a>
+    </li>
   </ul>
 
   <h2>A few of the things I use</h2>
 
   <ul class="mb-12 list-disc pl-6">
     <li>
-      <a href="https://svalboard.com/">Svalboard</a> in
+      <a href="https://svalboard.com/">Svalboard</a> in{" "}
       <strong>Colemak DH</strong>
     </li>
     <li>
-      <a href="https://zed.dev">Zed</a> in <a href="https://zed.dev/docs/vim"
-        >Vim mode</a
-      >
+      <a href="https://zed.dev">Zed</a> in{" "}
+      <a href="https://zed.dev/docs/vim">Vim mode</a>
     </li>
   </ul>
 </Layout>

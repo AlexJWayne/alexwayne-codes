@@ -1,5 +1,5 @@
 ---
-import { render, getCollection } from "astro:content"
+import { getCollection, render } from "astro:content"
 import Layout from "../layouts/Layout.astro"
 
 export async function getStaticPaths() {
@@ -16,17 +16,11 @@ const { Content } = await render(post)
 
 <Layout>
   <div class="flex">
-    <h2 class="m-0">
-      {post.data.title}
-    </h2>
+    <h2 class="m-0!">{post.data.title}</h2>
     <div class="flex-1 text-right text-sm">
-      {
-        post.data.source && (
-          <a href={post.data.source} class="font-normal">
-            Source Code
-          </a>
-        )
-      }
+      {post.data.source && <a href={post.data.source} class="font-normal">
+        Source Code
+      </a>}
       {post.data.date && <div>{post.data.date.toISOString().slice(0, 10)}</div>}
     </div>
   </div>

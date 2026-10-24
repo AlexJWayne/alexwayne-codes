@@ -7,6 +7,6 @@ source: https://github.com/AlexJWayne/alexwayne-codes/tree/main/src/components/b
 
 These backgrounds are [WebGPU](https://en.wikipedia.org/wiki/WebGPU) shaders, implemented with [TypeGPU](https://docs.swmansion.com/TypeGPU/). Use the panel at the top right to explore them.
 
-Special thanks to the legendary [Inigo Qilez](https://iquilezles.org/articles/) for his amazing articles on SDFs.
+Special thanks to the legendary [Inigo Quilez](https://iquilezles.org/articles/) for his amazing articles on SDFs.
 
 <div id="bg-dev"/>

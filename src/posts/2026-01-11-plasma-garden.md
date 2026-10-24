@@ -5,7 +5,7 @@ cover: ./2026-01-11-plasma-garden.jpg
 source: https://github.com/AlexJWayne/PlasmaGarden
 ---
 
-A generative art experiment. Use the arrow keys to explore the evergrowing garden.
+A generative art experiment. Use the arrow keys to explore the ever-growing garden.
 
 Rendered entirely on the GPU with [WebGPU](https://en.wikipedia.org/wiki/WebGPU) and [TypeGPU](https://docs.swmansion.com/TypeGPU/). It uses SDFs and raymarching to render perfectly curved organic shapes.
 

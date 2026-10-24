@@ -14,8 +14,7 @@
     "astro": "^7.4.0",
     "tailwindcss": "^4.3.3",
     "tweakpane": "^4.0.5",
-    "typegpu": "^0.10.2",
-    "typegpu-shader-canvas": "^0.5.2"
+    "typegpu": "^0.10.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

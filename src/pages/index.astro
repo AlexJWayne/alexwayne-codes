@@ -15,35 +15,38 @@ const posts = (await getCollection("posts"))
 ---
 
 <Layout>
-  <p class="m-0 text-base leading-relaxed text-slate-300 sm:text-lg">
-    I'm a software engineer{' '}
-    <span class="text-orange-300 drop-shadow-dark-glow">
-      by day
-    </span>,
-    <br />
-    and also{' '}
-    <span class="text-indigo-300 drop-shadow-dark-glow">
-      by night.
-    </span>
-  </p>
+  <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2 sm:gap-y-3 [&_a]:underline [&_a]:text-blue-100 [&_a]:transition-colors [&_a:hover]:text-violet-300 [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-4 [&_a:focus-visible]:outline-violet-300">
+    <section class="grid content-start gap-3 sm:row-span-2 sm:grid-rows-subgrid">
+      <h2 class="text-base leading-relaxed text-slate-300 sm:text-lg">
+        I'm a software engineer{' '}
+        <span class="text-orange-300 drop-shadow-dark-glow">by day.</span>
+      </h2>
+      <p class="text-sm">
+        I design and build software across the full stack, including UI/UX,
+        design systems, backend systems, complex data models, developer tooling,
+        and production infrastructure. I've specialized in TypeScript because I love
+        it. I'm the technical lead for a team building software used to construct and
+        monitor <a href="https://solvenergy.com/">utility-scale power plants.</a>
+      </p>
+    </section>
+    <section class="grid content-start gap-3 sm:row-span-2 sm:grid-rows-subgrid">
+      <h2 class="text-base leading-relaxed text-slate-300 sm:text-lg">
+        And also{' '}
+        <span class="text-indigo-300 drop-shadow-dark-glow">by night.</span>
+      </h2>
+      <p class="text-sm">
+        I explore graphics programming, generative art, music, technology in general,
+        and whatever else the muse points me toward. Other interests have included
+        3D modeling and animation, visual effects, 3D printing, electronics, and PCB
+        design.
+        <br/>
+        <br/>
+        Some of those things end up here.
+      </p>
+    </section>
+  </div>
 
-  <h2 class="mt-6 text-orange-300 drop-shadow-dark-glow text-lg">By day</h2>
-  <p class="text-sm">
-    I design and build software across the full stack, including UI/UX,
-    design systems, backend systems, complex data models, developer tooling,
-    and production infrastructure. I've specialized in TypeScript because I love
-    it. I'm the technical lead for a team building software used to construct and
-    monitor utility-scale power plants.
-  </p>
-
-  <h2 class="mt-6 text-indigo-300 drop-shadow-dark-glow text-lg">By night</h2>
-  <p class="text-sm">
-    I explore graphics programming, generative art, music, technology in general,
-    and whatever else the muse points me toward. Some of the things I make by
-    night end up here.
-  </p>
-
-  <GridList title="A few of the things I've made">
+  <GridList>
     {posts.map((post, index) => (
       <GridListItem
         href={`/${post.id}`}
@@ -86,7 +89,6 @@ const posts = (await getCollection("posts"))
       </ul>
     </section>
     <section>
-      <h2 class="mb-3 text-base font-medium">A few of the things I use</h2>
       <ul class="space-y-1">
         <li>
           <a href="https://svalboard.com/">Svalboard</a> in{" "}

@@ -16,11 +16,31 @@ const posts = (await getCollection("posts"))
 
 <Layout>
   <p class="m-0 text-base leading-relaxed text-slate-300 sm:text-lg">
-    I'm a software engineer by day,
+    I'm a software engineer{' '}
+    <span class="text-orange-300 drop-shadow-dark-glow">
+      by day
+    </span>,
     <br />
+    and also{' '}
     <span class="text-indigo-300 drop-shadow-dark-glow">
-      and also by night.
+      by night.
     </span>
+  </p>
+
+  <h2 class="mt-6 text-orange-300 drop-shadow-dark-glow text-lg">By day</h2>
+  <p class="text-sm">
+    I design and build software across the full stack, including UI/UX,
+    design systems, backend systems, complex data models, developer tooling,
+    and production infrastructure. I've specialized in TypeScript because I love
+    it. I'm the technical lead for a team building software used to construct and
+    monitor utility-scale power plants.
+  </p>
+
+  <h2 class="mt-6 text-indigo-300 drop-shadow-dark-glow text-lg">By night</h2>
+  <p class="text-sm">
+    I explore graphics programming, generative art, music, technology in general,
+    and whatever else the muse points me toward. Some of the things I make by
+    night end up here.
   </p>
 
   <GridList title="A few of the things I've made">

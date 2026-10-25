@@ -1,7 +1,7 @@
 ---
 title: SOLVEnergy
 cover: ./2025-02-21-solv-energy.png
-date: 2025-02-21
+date: 2016-11-01
 ---
 
 The work I do by day is for [SOLVEnergy](https://solvenergy.com).

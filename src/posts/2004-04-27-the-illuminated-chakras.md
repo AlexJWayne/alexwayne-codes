@@ -10,6 +10,8 @@ I created the visuals for _The Illuminated Chakras_, a 28-minute journey through
 
 The project took about a year and a half, with the work split roughly between 25% 3D Studio Max, 5% Photoshop, and 70% After Effects.
 
+The film won Best Animation at the 2004 New York Independent Film Festival.
+
 ![The Illuminated Chakras title over rainbow light and a starry background](./2004-04-27-the-illuminated-chakras.png)
 
 [Watch the official trailer on YouTube](https://www.youtube.com/watch?v=p8RIOfKj5gE).
